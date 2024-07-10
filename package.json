@@ -11,7 +11,7 @@
   },
   "scripts": {
     "start": "webpack --watch --progress --config webpack/webpack.dev.js",
-    "build": "webpack --watch --progress --config webpack/webpack.prod.js",
+    "build": "webpack --progress --config webpack/webpack.prod.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

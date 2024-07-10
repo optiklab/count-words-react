@@ -6,6 +6,8 @@ const srcDir = path.join(__dirname, '..', 'src');
 
 module.exports = {
     entry: {
+      index: path.join(srcDir, 'index.tsx'),
+      app: path.join(srcDir, 'App.tsx'),
       popup: path.join(srcDir, 'popup.tsx'),
       options: path.join(srcDir, 'options.tsx'),
       background: path.join(srcDir, 'background-service-worker.ts'),
@@ -37,7 +39,9 @@ module.exports = {
           cleanStaleWebpackAssets: false,
         }),
         new CopyPlugin({
-            patterns: [{ from: ".", to: "../", context: "public" }],
+            patterns: [
+                { from: "public", to: "../" }
+            ],
             options: {},
         }),
         ...getHtmlPlugins([

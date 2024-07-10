@@ -12,11 +12,11 @@
     "service_worker": "js/background.js"
   },
   "options_ui": {
-    "page": "options.html"
+    "page": "js/options.html"
   },
   "action": {
     "default_icon": "images/icon48.png",
-    "default_popup": "index.html" 
+    "default_popup": "js/popup.html"
   },
   "permissions": [
     "scripting", 

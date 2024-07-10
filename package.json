@@ -10,11 +10,10 @@
     "url": "https://github.com/optiklab/count-words-react.git"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "webpack --config webpack/webpack.prod.js",
+    "start": "webpack --watch --progress --config webpack/webpack.dev.js",
+    "build": "webpack --watch --progress --config webpack/webpack.prod.js",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "watch": "webpack --config webpack/webpack.dev.js --watch"
+    "eject": "react-scripts eject"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -26,16 +25,21 @@
     "@testing-library/user-event": "^13.5.0",
     "@types/chrome": "^0.0.268",
     "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.101",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^12.0.2",
+    "css-loader": "^7.1.2",
+    "html-webpack-plugin": "^5.6.0",
     "react-scripts": "^3.0.1",
+    "style-loader": "^4.0.0",
+    "terser-webpack-plugin": "^5.3.10",
     "ts-loader": "^9.5.1",
     "typescript": "^5.2.2",
     "web-vitals": "^2.1.4",
     "webpack": "^5.92.1",
-    "webpack-cli": "^5.1.4"
+    "webpack-cli": "^5.1.4",
+    "webpack-merge": "^6.0.1"
   },
   "eslintConfig": {
     "extends": [

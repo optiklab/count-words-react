@@ -6,13 +6,11 @@ const srcDir = path.join(__dirname, '..', 'src');
 
 module.exports = {
     entry: {
-      index: path.join(srcDir, 'index.tsx'),
-      app: path.join(srcDir, 'App.tsx'),
       popup: path.join(srcDir, 'popup.tsx'),
       options: path.join(srcDir, 'options.tsx'),
-      background: path.join(srcDir, 'background-service-worker.ts'),
+      background: path.join(srcDir, 'background-service-worker.tsx'),
       contentScript: path.join(srcDir, 'content-script.tsx'),
-      wordsCounter: path.join(srcDir, 'words-counter.ts')
+      wordsCounter: path.join(srcDir, 'wordsCounter.tsx')
     },
     module: {
         rules: [

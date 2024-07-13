@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import App from './App';
+import App from './popup';
 
-test('renders learn react link', () => {
+test('renders author page link', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
+  const linkElement = screen.getByText(/OptikLab (C) 2024/i);
   expect(linkElement).toBeInTheDocument();
 });

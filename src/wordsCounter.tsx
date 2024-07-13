@@ -1,12 +1,23 @@
-export const countWords = (text: string) => {
+const countWords = (text: string) => {
+
+
+/*
+,
+  "web_accessible_resources": [{
+    "matches": ["<all_urls>"],
+    "resources": ["js/wordsCounter.js"]
+  }]
+*/
+
+    console.log("countWords...");
 
     text = text.replace(/<\/[^>]+(>|$)/g, '');
 
-    const words = text.split(/\s+/);
+    const words = text!.split(/\s+/);
 
     const wordsMap = new Map();
 
-    words.forEach((value) => {
+    words.forEach((value: string) => {
         const clearValue = value.replace(/[^a-zA-Z]/g, "").trim();
 
         if (clearValue !== null && clearValue.length !== 0) {
@@ -32,7 +43,6 @@ export const countWords = (text: string) => {
     });
 
     const wordCount = words.length;
-    const charCount = text.length;
 
     let totalLength = 0;
     let maxLength = 0;
@@ -52,7 +62,7 @@ export const countWords = (text: string) => {
 
     let stat = `Stat on whole page:
           Word Count: ${wordCount}
-          Character Count: ${charCount}
+          Character Count: ${text!.length}
           Average Word Length: ${avgLength.toFixed(numAverageDigits)}
           Longest Word Length: ${maxLength}
           Twenty most frequent: 
@@ -67,7 +77,10 @@ export const countWords = (text: string) => {
         counter++;
     }
 
-    sessionStorage.setItem("my_page_stat", stat);
-
-    alert(stat);
+    return stat;
+    //chrome.storage.local.set({ "my_page_stat": stat }, function() {
+       // console.log("Current value is: " + stat);
+    //});
 };
+
+export default countWords;

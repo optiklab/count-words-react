@@ -21,6 +21,7 @@
   "permissions": [
     "scripting", 
     "activeTab",
+    "tabs",
     "contextMenus", 
     "storage"
   ],
@@ -36,7 +37,8 @@
       "matches": [
         "http://*/*",
         "https://*/*"
-      ]
+      ],
+      "run_at": "document_idle"
     }
   ]
 }

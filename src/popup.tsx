@@ -14,8 +14,8 @@ const App: React.FC<{}> = () => {
 
     //chrome.tabs.sendMessage(currentTab!.id!, "TabIdReceived");
 
-    var response = chrome.tabs.sendMessage(currentTab!.id!, "TabIdReceived" + currentTab!.url!);
-
+    // Communicate with a Content Script of This Exact Tab.
+    var response = chrome.tabs.sendMessage(currentTab!.id!, "TabIdReceived" + currentTab!.url!); 
     response.then(setWordStat);
   });
 

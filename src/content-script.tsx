@@ -1,10 +1,11 @@
 import countWords from './wordsCounter';
 
 chrome.runtime.onMessage.addListener( (msg, sender, sendResponse) => {
+    
     if (msg.startsWith("TabIdReceived")) {
 
         const tabUrl = msg.slice(14);
-
+        
         console.log("From content script onMessage: " + tabUrl);
 
         chrome.storage.local.get(["tab_url"], function(result) {
@@ -15,7 +16,7 @@ chrome.runtime.onMessage.addListener( (msg, sender, sendResponse) => {
 
                 const stat = countWords(pageText);
         
-                chrome.storage.local.set({ "my_page_stat": stat, "tab_url": msg.slice(14) }, function() {
+                chrome.storage.local.set({ "my_page_stat": stat, "tab_url": tabUrl }, function() {
                     console.log("RECalaculated from content script!");
                        
                     sendResponse(stat);

@@ -1,27 +1,36 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 import './popup.css'
+import '@fontsource/roboto/300.css';
 import ResultsDataCard from '../components/ResultsDataCard';
+
+//   
 
 const App: React.FC<{}> = () => {
   return (
     <div>
-      <h3>Count words</h3>
-      <img src="../images/icon128.png" />
-      <div className="card">
+      <div className="countWords-header">
+        <div className="countWords-header-name">
+          <div>Let's count words</div>
+        </div>
+        <div className="countWords-header-logo"><img src="../images/icon48.png" /></div>
       </div>
+      <ResultsDataCard input="Abc" />
       <div>
-        <ResultsDataCard input="Abc" />
+        <footer>
+          <div className="countWords-footer">
+            <span>
+              <a
+                className="App-link"
+                href="https://optiklab.github.io"
+                target="_blank"
+                rel="noopener noreferrer"
+              >OptikLab (C) {new Date().getFullYear()}</a>
+            </span>
+            <span> | Version 1.0.0</span>
+          </div>
+        </footer>
       </div>
-      <p className="read-the-docs">
-        Enjoyed? Learn more...
-      </p>
-      <a
-          className="App-link"
-          href="https://optiklab.github.io"
-          target="_blank"
-          rel="noopener noreferrer"
-        >OptikLab (C) 2024</a>
     </div>
   )
 }

@@ -19,7 +19,7 @@ chrome.runtime.onMessage.addListener( (msg, sender, sendResponse) => {
                 chrome.storage.local.set({ "my_page_stat": stat, "tab_url": tabUrl }, function() {
                     console.log("RECalaculated from content script!");
                        
-                    //sendResponse(stat);
+                    sendResponse(stat);
                     
                     chrome.runtime.sendMessage("PageStatReady", (response) => {
                         //console.log(response);

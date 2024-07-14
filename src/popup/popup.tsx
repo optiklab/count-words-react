@@ -4,7 +4,7 @@ import './popup.css'
 import '@fontsource/roboto/300.css';
 import ResultsDataCard from '../components/ResultsDataCard';
 
-//   
+//  
 
 const App: React.FC<{}> = () => {
   return (

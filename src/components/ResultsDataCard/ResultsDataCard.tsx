@@ -47,22 +47,28 @@ const ResultsDataCard: React.FC<{
 
     return <div>
             <div className="countWords-results-header">Page statistics:</div>
-            <div className='countWords-results-item'>
+            <div className="countWords-results-stat">
                 <div>
-                    <span>Word Count: </span><span>{resultsData.statistics.wordCount}</span>
+                    <div className='countWords-results-frequency-item-word'>Word Count:</div>
+                    <div className='countWords-results-frequency-item-count'>{resultsData.statistics.wordCount}</div>
                 </div>
                 <div>
-                    <span>Character Count: </span><span>{resultsData.statistics.characterCount}</span>
+                    <div className='countWords-results-frequency-item-word'>Character Count:</div>
+                    <div className='countWords-results-frequency-item-count'>{resultsData.statistics.characterCount}</div>
                 </div>
                 <div>
-                    <span>Average Word Length: </span><span>{resultsData.statistics.averageWordLength.toFixed(resultsData.statistics.numAverageDigits)}</span>
+                    <div className='countWords-results-frequency-item-word'>Average Word Length:</div>
+                    <div className='countWords-results-frequency-item-count'>{resultsData.statistics.averageWordLength.toFixed(resultsData.statistics.numAverageDigits)}</div>
                 </div>
                 <div>
-                    <span>Longest Word Length: </span><span>{resultsData.statistics.longestWordLength}</span>
+                    <div className='countWords-results-frequency-item-word'>Longest Word Length:</div>
+                    <div className='countWords-results-frequency-item-count'>{resultsData.statistics.longestWordLength}</div>
                 </div>
             </div>
-            <div className='countWords-results-frequency-header'>{resultsData.statistics.mostFrequentNumber} of most frequent words:</div>
-            <MostFrequentWordsList input={resultsData.mostFrequents} />
+            <div className="countWords-results-frequency">
+                <div className="countWords-results-frequency-header">{resultsData.statistics.mostFrequentNumber} of most frequent words:</div>
+                <MostFrequentWordsList input={resultsData.mostFrequents} />
+            </div>
     </div>
 }
 

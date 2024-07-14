@@ -11,11 +11,16 @@ const MostFrequentWordsList: React.FC<{
         return <div>No words frequency yet...</div>
     }
 
-    return (<div className='countWords-results-frequency-item'>
+    return (<div className='countWords-results-frequency-list'>
         {
             input.map((item, index) => (
-                <div key={index}>
-                    <span>{item.word}: {item.count}</span>
+                <div className='countWords-results-frequency-item' key={index}>
+                    <div className='countWords-results-frequency-item-word'>
+                        {item.word}
+                    </div>
+                    <div className='countWords-results-frequency-item-count'>
+                        {item.count}
+                    </div>
                 </div>
             ))
         }

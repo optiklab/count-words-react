@@ -1,4 +1,18 @@
-.countWords-results-frequency-item {
+.countWords-results-frequency-list {
     font-size:medium;
     padding-left: 15px;
+    width: 240px;
+}
+
+.countWords-results-frequency-item {
+    border-top: 1px solid #ccc!important;
+}
+
+.countWords-results-frequency-item-word {
+    text-align: left;
+    float:left;
+}
+
+.countWords-results-frequency-item-count {
+    text-align: right;
 }

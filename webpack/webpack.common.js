@@ -6,11 +6,11 @@ const srcDir = path.join(__dirname, '..', 'src');
 
 module.exports = {
     entry: {
-      popup: path.join(srcDir, 'popup.tsx'),
-      options: path.join(srcDir, 'options.tsx'),
-      background: path.join(srcDir, 'background-service-worker.tsx'),
-      contentScript: path.join(srcDir, 'content-script.tsx'),
-      wordsCounter: path.join(srcDir, 'wordsCounter.tsx')
+      popup: path.join(srcDir, 'popup/popup.tsx'),
+      options: path.join(srcDir, 'options/options.tsx'),
+      background: path.join(srcDir, 'background/background-service-worker.tsx'),
+      contentScript: path.join(srcDir, 'contentScript/content-script.tsx'),
+      wordsCounter: path.join(srcDir, 'utils/wordsCounter.tsx')
     },
     module: {
         rules: [

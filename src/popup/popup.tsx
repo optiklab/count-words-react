@@ -2,7 +2,6 @@ import * as React from 'react'
 import { useState, useEffect } from 'react'
 import { render } from 'react-dom'
 import './popup.css'
-//import countWords from './wordsCounter';
 
 const App: React.FC<{}> = () => {
 
@@ -16,7 +15,10 @@ const App: React.FC<{}> = () => {
 
     // Communicate with a Content Script of This Exact Tab.
     var response = chrome.tabs.sendMessage(currentTab!.id!, "TabIdReceived" + currentTab!.url!); 
-    response.then(setWordStat);
+    response.then((res) => {
+      console.log("Popup result: " + res);
+      //setWordStat(res);
+    });
   });
 
 /*
@@ -28,17 +30,20 @@ const App: React.FC<{}> = () => {
     chrome.tabs.sendMessage(currentTab!.id!, "TabIdReceived");
   });
 
+  */
   chrome.runtime.onMessage.addListener( (msg, sender, sendResponse) => {
     if (msg === "PageStatReady") {
+
+
         chrome.storage.local.get(["my_page_stat"], function(result) {
 
           console.log("From popup onMessage after getting value from storage!");
 
-          alert(result.my_page_stat);
+          setWordStat(result.my_page_stat);
+          //alert(result.my_page_stat);
         });
     }
   });
-  */
 
   const onclick = async () => {
     

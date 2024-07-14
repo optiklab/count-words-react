@@ -1,13 +1,6 @@
+import { ResultsData } from "../models/resultsData";
+
 const countWords = (text: string) => {
-
-
-/*
-,
-  "web_accessible_resources": [{
-    "matches": ["<all_urls>"],
-    "resources": ["js/wordsCounter.js"]
-  }]
-*/
 
     console.log("countWords...");
 
@@ -38,10 +31,6 @@ const countWords = (text: string) => {
         });
     }
 
-    const sortedWords = arr.sort(function (a, b) {
-        return (a.value > b.value) ? -1 : ((a.value < b.value) ? 1 : 0)
-    });
-
     const wordCount = words.length;
 
     let totalLength = 0;
@@ -58,29 +47,36 @@ const countWords = (text: string) => {
         ? 0
         : totalLength / wordCount;
 
-    const numAverageDigits = 2;
+    const results: ResultsData = {
+        statistics: {
+            wordCount: words.length,
+            characterCount: text!.length,
+            averageWordLength: avgLength,
+            numAverageDigits: 2,
+            longestWordLength: maxLength,
+            mostFrequentNumber: 20
+        },
+        mostFrequents: []
+    };
 
-    let stat = `Stat on whole page:
-          Word Count: ${wordCount}
-          Character Count: ${text!.length}
-          Average Word Length: ${avgLength.toFixed(numAverageDigits)}
-          Longest Word Length: ${maxLength}
-          Twenty most frequent: 
-          `;
+    const sortedWords = arr.sort(function (a, b) {
+        return (a.value > b.value) ? -1 : ((a.value < b.value) ? 1 : 0)
+    });
 
     let counter = 0;
     for (const item of sortedWords) {
-        stat += item.name + ' (' + item.value + ' times)\r\n';
-        if (counter > 20) {
+        results.mostFrequents.push({
+                count: item.value,
+                word: item.name
+            }
+        );
+        if (counter > results.statistics.mostFrequentNumber) {
             break;
         }
         counter++;
     }
 
-    return stat;
-    //chrome.storage.local.set({ "my_page_stat": stat }, function() {
-       // console.log("Current value is: " + stat);
-    //});
+    return results;
 };
 
 export default countWords;

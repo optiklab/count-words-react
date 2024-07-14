@@ -1,79 +1,17 @@
 import * as React from 'react'
-import { useState, useEffect } from 'react'
 import { render } from 'react-dom'
 import './popup.css'
+import ResultsDataCard from '../components/ResultsDataCard';
 
 const App: React.FC<{}> = () => {
-
-  const [wordStat, setWordStat] = useState<string>('123');
-
-  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-
-    var currentTab = tabs[0];
-
-    //chrome.tabs.sendMessage(currentTab!.id!, "TabIdReceived");
-
-    // Communicate with a Content Script of This Exact Tab.
-    var response = chrome.tabs.sendMessage(currentTab!.id!, "TabIdReceived" + currentTab!.url!); 
-    response.then((res) => {
-      console.log("Popup result: " + res);
-      //setWordStat(res);
-    });
-  });
-
-/*
-
-  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-
-    var currentTab = tabs[0];
-
-    chrome.tabs.sendMessage(currentTab!.id!, "TabIdReceived");
-  });
-
-  */
-  chrome.runtime.onMessage.addListener( (msg, sender, sendResponse) => {
-    if (msg === "PageStatReady") {
-
-
-        chrome.storage.local.get(["my_page_stat"], function(result) {
-
-          console.log("From popup onMessage after getting value from storage!");
-
-          setWordStat(result.my_page_stat);
-          //alert(result.my_page_stat);
-        });
-    }
-  });
-
-  const onclick = async () => {
-    
-    console.log("Called onclick script from popup!");
-
-    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true  });
-
-    chrome.scripting.executeScript({
-        target: { tabId: tab.id! },
-        func: () => {
-
-          chrome.storage.local.get(["my_page_stat"], function(result) {
-
-            alert(result.my_page_stat);
-          });
-        }
-    });
-  }
-
   return (
     <div>
       <h3>Count words</h3>
       <img src="../images/icon128.png" />
       <div className="card">
-        <button onClick={() => onclick() }>
-          Count stat
-        </button>
       </div>
       <div>
-        {wordStat}
+        <ResultsDataCard input="Abc" />
       </div>
       <p className="read-the-docs">
         Enjoyed? Learn more...

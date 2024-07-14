@@ -25,8 +25,7 @@ chrome.runtime.onMessage.addListener( (msg, sender, sendResponse) => {
                         //console.log(response);
                       });
                 });
-
-                sendResponse(stat);
+                
             } else {
                 
                 console.log("Redundant content script call - skipped!");

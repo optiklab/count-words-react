@@ -1,51 +1,55 @@
 import countWords from '../utils/wordsCounter';
 
-chrome.runtime.onMessage.addListener( (msg, sender, sendResponse) => {
-    
-    if (msg.startsWith("TabIdReceived")) {
+chrome.runtime.onMessage.addListener(
+    function calculateContentStat(msg, sender, sendResponse){
 
-        const tabUrl = msg.slice(14);
+        if (msg.startsWith("TabIdReceived")) {
+            
+            console.log("Content script - removeListener");
+            chrome.runtime.onMessage.removeListener(calculateContentStat);
+            
+            try {
+                const tabId = msg.slice(14, 10);
+                const tabUrl = msg.slice(25);
+
+                console.log("Content script - onMessage event received for tab " + tabUrl);
         
-        console.log("From content script onMessage: " + tabUrl);
-
-        chrome.storage.local.get(["tab_url"], function(result) {
-
-            if (result.tab_url !== tabUrl) { // For some reason, tabs activations are sent 3 times... we avoid redundant recalculations by remembering the most recent URL we calculated.
-
-                const pageText = document.body.innerText;
-
-                const stat = countWords(pageText);
+                chrome.storage.local.get(["tab_url"], function(result) {
         
-                chrome.storage.local.set({ "my_page_stat": stat, "tab_url": tabUrl }, function() {
-                    console.log("RECalaculated from content script!");
-                       
-                    sendResponse(stat);
-                    
-                    chrome.runtime.sendMessage("PageStatReady", (response) => {
-                        //console.log(response);
-                      });
+                    if (result.tab_url !== tabUrl) { // For some reason, tabs activations are sent 3 times... we avoid redundant recalculations by remembering the most recent URL we calculated.
+        
+                        const pageText = document.body.innerText;
+        
+                        console.log("Content script - ReCalaculating stat");
+                        const stat = countWords(pageText);
+
+                        const uniquePart = msg.slice(14);
+                        const key = "my_page_stat-" + uniquePart;
+
+                        chrome.storage.local.set({ [key]: stat, "tab_url": tabUrl, "tab_id": tabId }, function() {
+
+                            console.log("Content script - Results has been set to.. " + key);
+                            
+                            var response = chrome.runtime.sendMessage("PageStatReady-" + uniquePart, (response) => {
+
+                                console.log("Content script - PageStatReady message sent! " + response);
+                            });
+                            
+                            //sendResponse(stat);
+                        });
+                        
+                        
+                    } else {
+                        
+                        console.log("Content script - Redundant call - skipped!");
+                    }
                 });
-                
-            } else {
-                
-                console.log("Redundant content script call - skipped!");
+            } catch (error) {
             }
-        });
 
-/*
-        const pageText = document.body.innerText;
-
-        const stat = countWords(pageText);
-
-        chrome.storage.local.set({ "my_page_stat": stat, "tab_url": msg.slice(14) }, function() {
-            console.log("RECalaculated from content script!");
-               
-            sendResponse(stat);
-           // chrome.runtime.sendMessage("PageStatReady", (response) => {
-                //console.log(response);
-            //  });
-        });
-        */
-        //sendResponse(stat);
+            console.log("Content script - sendResponse(true)");
+            sendResponse(true);
+        }
+        return true;
     }
-  });
+);

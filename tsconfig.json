@@ -17,6 +17,7 @@
     "noEmitOnError": true,
     "moduleDetection": "force",
     "resolveJsonModule": true,
+    "noImplicitAny": true,
     "sourceMap": true,
     "rootDir": "src",
     "outDir": "dist/js",

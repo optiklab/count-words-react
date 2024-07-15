@@ -25,20 +25,15 @@
     "contextMenus", 
     "storage"
   ],
-  "host_permissions": [
-    "http://*/*",
-    "https://*/*"
-  ],
+  "host_permissions": ["<all_urls>"],
   "content_scripts": [
     {
       "js": [
         "js/contentScript.js"
       ],
-      "matches": [
-        "http://*/*",
-        "https://*/*"
-      ],
-      "run_at": "document_idle"
+      "matches": ["<all_urls>"],
+      "run_at": "document_idle",
+      "all_frames": false
     }
   ]
 }

@@ -12,6 +12,23 @@ function setupContextMenu() {
   });
 }
 
+chrome.tabs.onActivated.addListener(cleanStorage);
+
+async function cleanStorage(activeInfo: chrome.tabs.TabActiveInfo) {
+  try {
+    console.log("Background script - cleanStorage!");
+    chrome.storage.local.get(["tab_id"], function(result) {
+      if (result.tab_url !== activeInfo.tabId) {
+        chrome.storage.local.set({ "my_page_stat": null, "tab_url": null, "tab_id": null }, function() {
+          console.log("Background script - new tab activated, clean up things first!");
+        });
+      }
+    });
+
+  } catch (error) {
+  }
+}
+
 async function pushToStorage(stat : string) {
 
     //sessionStorage.setItem("my_page_stat", stat);
@@ -101,8 +118,7 @@ Twenty most frequent:
   });
   */
 
-  alert(stat);
-
+  
   /*
   chrome.scripting.executeScript({
     target: { tabId: tab!.id! },

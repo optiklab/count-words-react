@@ -13,8 +13,22 @@
 .countWords-results-stat {
     font-size:medium;
     padding-left: 15px;
-    width: 240px;
+    width: 200px;
 }
 
-.countWords-results-frequency {
+.countWords-results-frequency-first {
+    width: 200px;
+    float: left;
+    margin-right:20px;
+}
+
+.countWords-results-frequency-second {
+    width: 250px;
+    margin-left:20px;
+    float: right;
+}
+
+.countWords-results-datacard {
+    float: left;
+    margin-bottom: 10px;
 }

@@ -1,4 +1,11 @@
+import * as React from 'react'
+import { render } from 'react-dom'
+import { useState, useEffect } from 'react'
+import { ResultsData } from '../models/resultsData'
+import '@fontsource/roboto/300.css';
+import ResultsDataCard from '../components/ResultsDataCard';
 import countWords from '../utils/wordsCounter';
+import './content-script.css'
 
 chrome.runtime.onMessage.addListener(
     function calculateContentStat(msg, sender, sendResponse){
@@ -53,3 +60,54 @@ chrome.runtime.onMessage.addListener(
         return true;
     }
 );
+
+const App: React.FC<{}> = () => {
+
+    const [resultsData, setResultsData] = useState<ResultsData | null>(null);
+
+    useEffect(() => {
+      chrome.storage.local.get(["selection_stat"], 
+        function(result) {
+            console.log("Content Script - SetResultsData on Selection.. ");
+            if (result["selection_stat"]) {
+              setResultsData(result["selection_stat"]);
+            }
+        });
+    }, [resultsData]);  
+
+    if (!resultsData) {
+
+        return <div>Nothing selected...</div>
+    }
+
+    return (
+      <div className="overlayCard">
+        <div className="countWords-header">
+          <div className="countWords-header-name">
+            <div>Let's count words</div>
+          </div>
+          <div className="countWords-header-logo"><img src="../../images/icon48.png" /></div>
+        </div>
+        <ResultsDataCard input={resultsData} />
+        <div>
+          <footer>
+            <div className="countWords-footer">
+              <span>
+                <a
+                  className="App-link"
+                  href="https://optiklab.github.io"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >OptikLab (C) {new Date().getFullYear()}</a>
+              </span>
+              <span> | Version 1.0.0</span>
+            </div>
+          </footer>
+        </div>
+      </div>
+    )
+  }
+
+const root = document.createElement('div')
+document.body.appendChild(root)
+render(<App />, root)

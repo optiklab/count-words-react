@@ -1,3 +1,5 @@
+import { ResultsData } from '../models/resultsData'
+
 const title = chrome.runtime.getManifest().name;
 
 chrome.runtime.onInstalled.addListener(() => {
@@ -19,7 +21,7 @@ async function cleanStorage(activeInfo: chrome.tabs.TabActiveInfo) {
     console.log("Background script - cleanStorage!");
     chrome.storage.local.get(["tab_id"], function(result) {
       if (result.tab_url !== activeInfo.tabId) {
-        chrome.storage.local.set({ "my_page_stat": null, "tab_url": null, "tab_id": null }, function() {
+        chrome.storage.local.set({ "my_page_stat": null, "tab_url": null, "tab_id": null, "selection_stat": null }, function() {
           console.log("Background script - new tab activated, clean up things first!");
         });
       }
@@ -29,19 +31,28 @@ async function cleanStorage(activeInfo: chrome.tabs.TabActiveInfo) {
   }
 }
 
-async function pushToStorage(stat : string) {
+function pushToScreen(input : ResultsData) {
 
-    //sessionStorage.setItem("my_page_stat", stat);
-  
+    let stat = `Stat on selected text:
+    Word Count: ${input.statistics.wordCount}
+    Character Count: ${input.statistics.characterCount}
+    Average Word Length: ${input.statistics.averageWordLength.toFixed(input.statistics.numAverageDigits)}
+    Longest Word Length: ${input.statistics.longestWordLength}
+    ${input.statistics.mostFrequentNumber} most frequent:
+      `;
+
+    for (const item of input.mostFrequents) {
+        stat += item.word + ' (' + item.count + ' times)\r\n';
+    }
+
+    alert(stat);
 }
   
 chrome.contextMenus.onClicked.addListener((data, tab) => {
   
-  console.log("From background addListener contextMenu onClicked");
+  console.log("Background script - ContextMenu onClicked");
 
   const text = data.selectionText;
-
-  //countWords(text!);
   
   const words = text!.split(/\s+/);
 
@@ -68,11 +79,6 @@ chrome.contextMenus.onClicked.addListener((data, tab) => {
       });
   }
 
-  const sortedWords = arr.sort(function(a, b) {
-    return (a.value > b.value) ? -1 : ((a.value < b.value) ? 1 : 0)
-  });
-
-
   const wordCount = words.length;
   
   let totalLength = 0;
@@ -85,46 +91,46 @@ chrome.contextMenus.onClicked.addListener((data, tab) => {
           maxLength = curLength;
       }
   }
-
   const avgLength = wordCount === 0
-      ? 0
-      : totalLength / wordCount;
+  ? 0
+  : totalLength / wordCount;
 
-  const numAverageDigits = 2;
+  const results: ResultsData = {
+    statistics: {
+        wordCount: words.length,
+        characterCount: text!.length,
+        averageWordLength: avgLength,
+        numAverageDigits: 2,
+        longestWordLength: maxLength,
+        mostFrequentNumber: 20
+    },
+    mostFrequents: []
+  };
 
-  let stat = `Stat on selected text:
-Word Count: ${wordCount}
-Character Count: ${text!.length}
-Average Word Length: ${avgLength.toFixed(numAverageDigits)}
-Longest Word Length: ${maxLength}
-Twenty most frequent:
-  `;
-  
+  const sortedWords = arr.sort(function (a, b) {
+    return (a.value > b.value) ? -1 : ((a.value < b.value) ? 1 : 0)
+  });
+
   let counter = 0;
   for (const item of sortedWords) {
-      stat += item.name + ' (' + item.value + ' times)\r\n';
-      if (counter > 20) {
-          break;
-      }
-      counter++;
+    results.mostFrequents.push({
+            count: item.value,
+            word: item.name
+        }
+    );
+    if (counter > results.statistics.mostFrequentNumber) {
+        break;
+    }
+    counter++;
   }
-
-  /*
-  const hash = calculateHashOnSelection(text);
-  chrome.storage.local.set({ "my_page_stat": stat, "tab_url": null, "selection_hash": hash }, function() {
-
-      // Popup script now can GRAB last selection value... if we want to show it in popup.
+     
+  chrome.storage.local.set({ "selection_stat": results }, function() {
 
   });
-  */
 
-  
-  /*
   chrome.scripting.executeScript({
     target: { tabId: tab!.id! },
-    func : pushToStorage,
-    args : [ stat ]
+    func : pushToScreen,
+    args : [ results ]
   });
-  */
-  
 });

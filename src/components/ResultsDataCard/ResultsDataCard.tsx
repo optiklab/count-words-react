@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { ResultsData } from '../../models/resultsData'
 import '@fontsource/roboto/300.css';
 import MostFrequentWordsList from '../MostFrequentWordsList';
@@ -8,64 +8,85 @@ import './ResultsDataCard.css';
 const zeroPad = (num: number, places: number) => String(num).padStart(places, '0');
 
 const ResultsDataCard: React.FC<{
-    input: string
+    input: ResultsData| null 
 }> = ({input}) => {
+
     const [resultsData, setResultsData] = useState<ResultsData | null>(null);
 
     if (!resultsData) {
+        
+        // This is only for content-script overlay.
+        if (input) {
 
-        console.log("ResultsDataCard - Find active tab..");
-        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => { 
+            //setResultsData(input);
+        } else {
 
-            const currentTab = tabs[0];
-
-            const uniquePart = zeroPad(currentTab.id!, 10) + "-" + currentTab.url;
-            const key = "my_page_stat-" + uniquePart;
-
-            chrome.storage.local.get([
-                key, 
-                "tab_url", 
-                "tab_id"], 
-                function(result) {
-                    if (result[key]) {
-                        setResultsData(result[key]);
-                    } else {
-                        console.log("ResultsDataCard - Communicate with a Content Script of This Exact Tab.. " + key);
-                        var response = chrome.tabs.sendMessage(currentTab.id!, "TabIdReceived-" + uniquePart); 
-                    }
-                });
-        });
-
-        // Show results as soon as calculation is over 
-        chrome.runtime.onMessage.addListener(
-            function setPageStatReady(msg, sender, sendResponse){
-                if (msg.startsWith("PageStatReady")) {
-                    chrome.runtime.onMessage.removeListener(setPageStatReady);
-
-                    console.log("ResultsDataCard - PageStatReady event catched.");
-
-                    const key = "my_page_stat-" + msg.slice(14);
-            
-                    chrome.storage.local.get([key], 
-                        function(result) {
-                            console.log("ResultsDataCard - SetResultsData set.. " + key);
+            console.log("ResultsDataCard - On Page - Find active tab..");
+            chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => { 
+    
+                const currentTab = tabs[0];
+    
+                const uniquePart = zeroPad(currentTab.id!, 10) + "-" + currentTab.url;
+                const key = "my_page_stat-" + uniquePart;
+    
+                chrome.storage.local.get([
+                    key, 
+                    "tab_url", 
+                    "tab_id"], 
+                    function(result) {
+                        if (result[key]) {
                             setResultsData(result[key]);
-                        });
-
+                        } else {
+                            console.log("ResultsDataCard - Communicate with a Content Script of This Exact Tab.. " + key);
+                            var response = chrome.tabs.sendMessage(currentTab.id!, "TabIdReceived-" + uniquePart); 
+                        }
+                    });
+            });
+    
+            // Show results as soon as calculation is over 
+            chrome.runtime.onMessage.addListener(
+                function setPageStatReady(msg, sender, sendResponse){
+                    if (msg.startsWith("PageStatReady")) {
+                        console.log("ResultsDataCard - PageStatReady event catched.");
+    
+                        const key = "my_page_stat-" + msg.slice(14);
+                
+                        chrome.storage.local.get([key], 
+                            function(result) {
+                                console.log("ResultsDataCard - SetResultsData on PageStatReady set.. " + key);
+                                setResultsData(result[key]);
+                            });
+    
+                    }
+    
                     console.log("ResultsDataCard - PageStatReady sendResponse(true).");
                     sendResponse(true);
+    
+                    //chrome.runtime.onMessage.removeListener(setPageStatReady);
+                    
+                    return true;
                 }
-                
-                return true;
-            }
-        );
+            );
+        }
 
         return <div>No data...</div>
     }
+
     //useEffect(() => {
 
     //}, [resultsData]);  
 
+    /*
+    chrome.storage.onChanged.addListener((changes, namespace) => {
+        for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
+          console.log(
+            `Storage key "${key}" in namespace "${namespace}" changed.`,
+            `Old value was "${oldValue}", new value is "${newValue}".`
+          );
+        }
+      });
+      */
+      
     return <div className="countWords-results-datacard">
         <div className="countWords-results-frequency-first">
             <div className="countWords-results-header">Page statistics:</div>

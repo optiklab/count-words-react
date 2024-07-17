@@ -3,6 +3,9 @@ import { render } from 'react-dom'
 import './popup.css'
 import '@fontsource/roboto/300.css';
 import ResultsDataCard from '../components/ResultsDataCard';
+import { ResultsData } from '../models/resultsData';
+
+const input: ResultsData | null = null;
 
 const App: React.FC<{}> = () => {
   return (
@@ -13,7 +16,7 @@ const App: React.FC<{}> = () => {
         </div>
         <div className="countWords-header-logo"><img src="../images/icon48.png" /></div>
       </div>
-      <ResultsDataCard input="Abc" />
+      <ResultsDataCard input={input} />
       <div>
         <footer>
           <div className="countWords-footer">

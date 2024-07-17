@@ -1,0 +1,32 @@
+.overlayCard {
+  position: fixed;
+  right: 5%;
+  bottom: 5%;
+  max-width: 500px;
+  max-height: 500px;
+  background-color:#f5f5f5;
+  z-index:99999;
+}
+
+.countWords-header {
+  height: 60px;
+  background-color:#f5f5f5;
+  border-bottom: 1px solid #ccc!important;
+}
+
+.countWords-header-logo {
+  text-align: right;
+  padding: 5px;
+}
+
+.countWords-header-name {
+  float:left;
+  padding: 15px;
+  font-weight: bold;
+  font-size:x-large;
+}
+
+.countWords-footer {
+  border-top: 1px solid #ccc!important;
+  text-align: center;
+}

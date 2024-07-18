@@ -12,14 +12,14 @@ chrome.runtime.onMessage.addListener(
 
         if (msg.startsWith("TabIdReceived")) {
             
-            console.log("Content script - removeListener");
+            //console.log("Content script - removeListener");
             chrome.runtime.onMessage.removeListener(calculateContentStat);
             
             try {
                 const tabId = msg.slice(14, 10);
                 const tabUrl = msg.slice(25);
 
-                console.log("Content script - onMessage event received for tab " + tabUrl);
+                //console.log("Content script - onMessage event received for tab " + tabUrl);
         
                 chrome.storage.local.get(["tab_url"], function(result) {
         
@@ -27,7 +27,7 @@ chrome.runtime.onMessage.addListener(
         
                         const pageText = document.body.innerText;
         
-                        console.log("Content script - ReCalaculating stat");
+                        //console.log("Content script - ReCalaculating stat");
                         const stat = countWords(pageText);
 
                         const uniquePart = msg.slice(14);
@@ -35,26 +35,24 @@ chrome.runtime.onMessage.addListener(
 
                         chrome.storage.local.set({ [key]: stat, "tab_url": tabUrl, "tab_id": tabId }, function() {
 
-                            console.log("Content script - Results has been set to.. " + key);
+                            //console.log("Content script - Results has been set to.. " + key);
                             
                             var response = chrome.runtime.sendMessage("PageStatReady-" + uniquePart, (response) => {
 
-                                console.log("Content script - PageStatReady message sent! " + response);
+                                //console.log("Content script - PageStatReady message sent! " + response);
                             });
-                            
-                            //sendResponse(stat);
                         });
                         
                         
                     } else {
                         
-                        console.log("Content script - Redundant call - skipped!");
+                        //console.log("Content script - Redundant call - skipped!");
                     }
                 });
             } catch (error) {
             }
 
-            console.log("Content script - sendResponse(true)");
+            //console.log("Content script - sendResponse(true)");
             sendResponse(true);
         }
         return true;
@@ -68,7 +66,7 @@ const App: React.FC<{}> = () => {
     useEffect(() => {
       chrome.storage.local.get(["selection_stat"], 
         function(result) {
-            console.log("Content Script - SetResultsData on Selection.. ");
+            //console.log("Content Script - SetResultsData on Selection.. ");
             if (result["selection_stat"]) {
               setResultsData(result["selection_stat"]);
             }

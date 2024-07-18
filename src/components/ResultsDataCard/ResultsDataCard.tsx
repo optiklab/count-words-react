@@ -29,10 +29,12 @@ const ResultsDataCard: React.FC<{
         // This is only for content-script overlay.
         if (input) {
 
+            // This code will show the same data in overlay (over the page). I have an idea to make this option by toggle. 
+            // But I don't really think that someone needs it... so keep it commented to use it later.
             //setResultsData(input);
         } else {
 
-            console.log("ResultsDataCard - On Page - Find active tab..");
+            //console.log("ResultsDataCard - On Page - Find active tab..");
             chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => { 
     
                 const currentTab = tabs[0];
@@ -48,7 +50,7 @@ const ResultsDataCard: React.FC<{
                         if (result[key]) {
                             setResultsData(result[key]);
                         } else {
-                            console.log("ResultsDataCard - Communicate with a Content Script of This Exact Tab.. " + key);
+                            //console.log("ResultsDataCard - Communicate with a Content Script of This Exact Tab.. " + key);
                             var response = chrome.tabs.sendMessage(currentTab.id!, "TabIdReceived-" + uniquePart); 
                         }
                     });
@@ -58,19 +60,19 @@ const ResultsDataCard: React.FC<{
             chrome.runtime.onMessage.addListener(
                 function setPageStatReady(msg, sender, sendResponse){
                     if (msg.startsWith("PageStatReady")) {
-                        console.log("ResultsDataCard - PageStatReady event catched.");
+                        //console.log("ResultsDataCard - PageStatReady event catched.");
     
                         const key = "my_page_stat-" + msg.slice(14);
                 
                         chrome.storage.local.get([key], 
                             function(result) {
-                                console.log("ResultsDataCard - SetResultsData on PageStatReady set.. " + key);
+                                //console.log("ResultsDataCard - SetResultsData on PageStatReady set.. " + key);
                                 setResultsData(result[key]);
                             });
     
                     }
     
-                    console.log("ResultsDataCard - PageStatReady sendResponse(true).");
+                    //console.log("ResultsDataCard - PageStatReady sendResponse(true).");
                     sendResponse(true);
     
                     //chrome.runtime.onMessage.removeListener(setPageStatReady);

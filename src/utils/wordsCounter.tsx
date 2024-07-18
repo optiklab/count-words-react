@@ -2,7 +2,7 @@ import { ResultsData } from "../models/resultsData";
 
 const countWords = (text: string) => {
 
-    console.log("countWords...");
+    //console.log("countWords...");
 
     text = text.replace(/<\/[^>]+(>|$)/g, '');
 

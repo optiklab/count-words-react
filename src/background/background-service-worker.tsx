@@ -18,11 +18,11 @@ chrome.tabs.onActivated.addListener(cleanStorage);
 
 async function cleanStorage(activeInfo: chrome.tabs.TabActiveInfo) {
   try {
-    console.log("Background script - cleanStorage!");
+    //console.log("Background script - cleanStorage!");
     chrome.storage.local.get(["tab_id"], function(result) {
       if (result.tab_url !== activeInfo.tabId) {
         chrome.storage.local.set({ "my_page_stat": null, "tab_url": null, "tab_id": null, "selection_stat": null }, function() {
-          console.log("Background script - new tab activated, clean up things first!");
+          //console.log("Background script - new tab activated, clean up things first!");
         });
       }
     });
@@ -50,7 +50,7 @@ function pushToScreen(input : ResultsData) {
   
 chrome.contextMenus.onClicked.addListener((data, tab) => {
   
-  console.log("Background script - ContextMenu onClicked");
+  //console.log("Background script - ContextMenu onClicked");
 
   const text = data.selectionText;
   

@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { useState } from 'react'
 import Toggle from 'react-toggle';
+import ReactSlider from 'react-slider';
 import { ResultsData } from '../../models/resultsData'
 import '@fontsource/roboto/300.css';
 import MostFrequentWordsList from '../MostFrequentWordsList';
@@ -12,14 +13,17 @@ const ResultsDataCard: React.FC<{
     input: ResultsData| null 
 }> = ({input}) => {
 
-    const [resultsData, setResultsData] = useState<ResultsData | null>(null);
-
     const [caseSensitiveToggle, setCaseSensitiveToggle] = useState(true);
-
     const handleToggleChange = () => {
         setCaseSensitiveToggle(!caseSensitiveToggle);
     };
 
+    const [sliderValue, setSliderValue] = useState(0);
+    const handleSliderChange = (value: number, index: number) => {
+        setSliderValue(value);
+    };
+
+    const [resultsData, setResultsData] = useState<ResultsData | null>(null);
     if (!resultsData) {
         
         // This is only for content-script overlay.
@@ -123,13 +127,27 @@ const ResultsDataCard: React.FC<{
                         onChange={handleToggleChange} />
                         <span className="countWords-toggle-label-text">Case sensivity</span>
                 </label>
+                <label>
+                    <ReactSlider
+                            className="horizontal-slider"
+                            marks
+                            markClassName="example-mark"
+                            min={0}
+                            max={5}
+                            thumbClassName="example-thumb"
+                            trackClassName="example-track"
+                            onChange={handleSliderChange}
+                            renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
+                        />
+                </label>
             </div>
         </div>
         <div className="countWords-results-frequency-second">
             <div className="countWords-results-frequency-header">{resultsData.statistics.mostFrequentNumber} of most frequent words:</div>
             <MostFrequentWordsList 
                 input={ caseSensitiveToggle ? resultsData.mostFrequentsCaseInsensitive : resultsData.mostFrequentsCaseSensitive} 
-                max={resultsData.statistics.mostFrequentNumber} />
+                max={resultsData.statistics.mostFrequentNumber}
+                filterOutWordsLength={sliderValue} />
         </div>
     </div>
 }

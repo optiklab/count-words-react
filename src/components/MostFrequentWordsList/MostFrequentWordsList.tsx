@@ -5,8 +5,9 @@ import './MostFrequentWordsList.css';
 
 const MostFrequentWordsList: React.FC<{
     input: Array<MostFrequentWord>,
-    max: number
-}> = ({input, max}) => {
+    max: number,
+    filterOutWordsLength: number
+}> = ({input, max, filterOutWordsLength}) => {
 
     if (!input) {
         return <div>No words frequency yet...</div>
@@ -14,7 +15,7 @@ const MostFrequentWordsList: React.FC<{
 
     return (<div className='countWords-results-frequency-list'>
         {
-            input.slice(0, max).map((item, index) => (
+            input.filter((pair) => pair.word.length > filterOutWordsLength).slice(0, max).map((item, index) => (
                 <div className='countWords-results-frequency-item' key={index}>
                     <div className='countWords-results-frequency-item-word'>
                         {item.word}

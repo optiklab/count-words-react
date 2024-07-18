@@ -12,5 +12,6 @@ export interface ResultsData {
     longestWordLength: number
     mostFrequentNumber: number
   }
-  mostFrequents: Array<MostFrequentWord>
+  mostFrequentsCaseSensitive: Array<MostFrequentWord>
+  mostFrequentsCaseInsensitive: Array<MostFrequentWord>
 };

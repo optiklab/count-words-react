@@ -8,7 +8,10 @@ const countWords = (text: string) => {
 
     const words = text!.split(/\s+/);
 
+    const wordCount = words.length;
+
     const wordsMap = new Map();
+    const wordsSensitiveMap = new Map();
 
     words.forEach((value: string) => {
         const clearValue = value.replace(/[^a-zA-Z]/g, "").trim();
@@ -21,6 +24,16 @@ const countWords = (text: string) => {
                 wordsMap.set(clearValue, 1);
             }
         }
+
+        const clearValueSensitive = clearValue.toLowerCase();
+        if (clearValueSensitive !== null && clearValueSensitive.length !== 0) {
+            if (wordsSensitiveMap.has(clearValueSensitive)) {
+                const counter = wordsSensitiveMap.get(clearValueSensitive);
+                wordsSensitiveMap.set(clearValueSensitive, counter + 1);
+            } else {
+                wordsSensitiveMap.set(clearValueSensitive, 1);
+            }
+        }
     })
 
     const arr = [];
@@ -30,8 +43,20 @@ const countWords = (text: string) => {
             value: value
         });
     }
+    const sortedWords = arr.sort(function (a, b) {
+        return (a.value > b.value) ? -1 : ((a.value < b.value) ? 1 : 0)
+    });
 
-    const wordCount = words.length;
+    const arrSensitive = [];
+    for (const [key, value] of wordsSensitiveMap) {
+        arrSensitive.push({
+            name: key,
+            value: value
+        });
+    }
+    const sortedWordsSensitive = arrSensitive.sort(function (a, b) {
+        return (a.value > b.value) ? -1 : ((a.value < b.value) ? 1 : 0)
+    });
 
     let totalLength = 0;
     let maxLength = 0;
@@ -49,31 +74,31 @@ const countWords = (text: string) => {
 
     const results: ResultsData = {
         statistics: {
-            wordCount: words.length,
+            wordCount: wordCount,
             characterCount: text!.length,
             averageWordLength: avgLength,
             numAverageDigits: 2,
             longestWordLength: maxLength,
             mostFrequentNumber: 20
         },
-        mostFrequents: []
+        mostFrequentsCaseSensitive: [],
+        mostFrequentsCaseInsensitive: []
     };
 
-    const sortedWords = arr.sort(function (a, b) {
-        return (a.value > b.value) ? -1 : ((a.value < b.value) ? 1 : 0)
-    });
-
-    let counter = 0;
     for (const item of sortedWords) {
-        results.mostFrequents.push({
+        results.mostFrequentsCaseInsensitive.push({
                 count: item.value,
                 word: item.name
             }
         );
-        if (counter > results.statistics.mostFrequentNumber) {
-            break;
-        }
-        counter++;
+    }
+
+    for (const item of sortedWordsSensitive) {
+        results.mostFrequentsCaseSensitive.push({
+                count: item.value,
+                word: item.name
+            }
+        );
     }
 
     return results;

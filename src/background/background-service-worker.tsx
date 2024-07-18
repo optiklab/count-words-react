@@ -41,7 +41,7 @@ function pushToScreen(input : ResultsData) {
     ${input.statistics.mostFrequentNumber} most frequent:
       `;
 
-    for (const item of input.mostFrequents) {
+    for (const item of input.mostFrequentsCaseInsensitive) {
         stat += item.word + ' (' + item.count + ' times)\r\n';
     }
 
@@ -104,7 +104,8 @@ chrome.contextMenus.onClicked.addListener((data, tab) => {
         longestWordLength: maxLength,
         mostFrequentNumber: 20
     },
-    mostFrequents: []
+    mostFrequentsCaseInsensitive: [],
+    mostFrequentsCaseSensitive: []
   };
 
   const sortedWords = arr.sort(function (a, b) {
@@ -113,7 +114,7 @@ chrome.contextMenus.onClicked.addListener((data, tab) => {
 
   let counter = 0;
   for (const item of sortedWords) {
-    results.mostFrequents.push({
+    results.mostFrequentsCaseInsensitive.push({
             count: item.value,
             word: item.name
         }

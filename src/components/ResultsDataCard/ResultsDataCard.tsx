@@ -80,23 +80,8 @@ const ResultsDataCard: React.FC<{
             );
         }
 
-        return <div>No data...</div>
+        return <div>No data... please refresh the page!</div>
     }
-
-    //useEffect(() => {
-
-    //}, [resultsData]);  
-
-    /*
-    chrome.storage.onChanged.addListener((changes, namespace) => {
-        for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
-          console.log(
-            `Storage key "${key}" in namespace "${namespace}" changed.`,
-            `Old value was "${oldValue}", new value is "${newValue}".`
-          );
-        }
-      });
-      */
       
     return <div className="countWords-results-datacard">
         <div className="countWords-results-frequency-first">

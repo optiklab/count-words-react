@@ -3,6 +3,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const HtmlPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const srcDir = path.join(__dirname, '..', 'src');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -52,6 +53,18 @@ module.exports = {
         path: path.join(__dirname, '../dist/js')
     },
     optimization: {
+      minimize: true,
+      minimizer: [
+        new TerserPlugin({
+          parallel: true,
+          terserOptions: {
+            ecma: 6,
+            output: { 
+              ascii_only: true 
+            },
+          },
+        }),
+      ],
       splitChunks: {
         chunks(chunk) {
           return chunk.name !== 'contentScript' && chunk.name !== 'background'

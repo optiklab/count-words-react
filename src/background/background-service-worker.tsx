@@ -1,4 +1,5 @@
 import { ResultsData } from '../models/resultsData'
+import XRegExp from 'xregexp';
 
 const title = chrome.runtime.getManifest().name;
 
@@ -59,7 +60,9 @@ chrome.contextMenus.onClicked.addListener((data, tab) => {
   const wordsMap = new Map();
 
   words?.forEach((value: string) => {
-      const clearValue = value.replace(/[^a-zA-Z]/g, "").trim();
+    var regex = XRegExp("[^\\s\\p{Latin}\\p{Cyrillic}]", "g");
+    const clearValue = XRegExp.replace(value, regex, "").trim();
+    //const clearValue = value.replace(/[^a-zA-Z]/g, "").trim(); // Only English
   
       if (clearValue !== null && clearValue.length !== 0) {
           if (wordsMap.has(clearValue)) {

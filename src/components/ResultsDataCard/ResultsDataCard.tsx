@@ -113,6 +113,7 @@ const ResultsDataCard: React.FC<{
                         <span className="countWords-toggle-label-text">Case sensivity</span>
                 </label>
                 <label>
+                    <span className="countWords-slider-label-text">Skip words of length</span>
                     <ReactSlider
                             className="horizontal-slider"
                             marks

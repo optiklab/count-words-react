@@ -33,8 +33,6 @@
     margin-bottom: 10px;
 }
 
-
-
 /* Toggle CSS */
 
 .react-toggle {
@@ -233,4 +231,12 @@
   height: 30px;
   line-height: 30px;
   margin-top: 7px;
+}
+
+.countWords-slider-label-text {
+  font-size:medium !important;
+  vertical-align: middle;
+  margin-top: 15px;
+  margin-left: 5px;
+  display: inline-block;
 }

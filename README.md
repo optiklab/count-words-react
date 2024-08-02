@@ -26,6 +26,10 @@ Go to extension management page in Chrome browser and install extension from the
 
 ![4](https://github.com/optiklab/count-words-react/blob/main/docs/statistics-on-selection.png)
 
+# Maintenance
+
+Project is done and not going to be updated here. All updates are going to be made from [TacTicA repository](https://github.com/tacticaxyz/tactica.count-words-extension).
+
 # Made by 
 
 [optiklab](https://optiklab.github.io)

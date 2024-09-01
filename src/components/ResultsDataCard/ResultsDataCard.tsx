@@ -32,6 +32,8 @@ const ResultsDataCard: React.FC<{
             // This code will show the same data in overlay (over the page). I have an idea to make this option by toggle. 
             // But I don't really think that someone needs it... so keep it commented to use it later.
             //setResultsData(input);
+
+            // Uncomment UI part of content-script.tsx
         } else {
 
             //console.log("ResultsDataCard - On Page - Find active tab..");
@@ -51,7 +53,12 @@ const ResultsDataCard: React.FC<{
                             setResultsData(result[key]);
                         } else {
                             //console.log("ResultsDataCard - Communicate with a Content Script of This Exact Tab.. " + key);
-                            var response = chrome.tabs.sendMessage(currentTab.id!, "TabIdReceived-" + uniquePart); 
+                            var response = chrome.tabs.sendMessage(currentTab.id!, "TabIdReceived-" + uniquePart, (response) => {
+                                response = response || {};
+                                if (!response.status) {
+                                    //console.log("Communication failed!"); // Usually, there is exception.
+                                }
+                            });
                         }
                     });
             });
@@ -73,7 +80,7 @@ const ResultsDataCard: React.FC<{
                     }
     
                     //console.log("ResultsDataCard - PageStatReady sendResponse(true).");
-                    sendResponse(true);
+                    sendResponse({status: true});
     
                     //chrome.runtime.onMessage.removeListener(setPageStatReady);
                     

@@ -58,7 +58,7 @@ chrome.runtime.onMessage.addListener(
         return true;
     }
 );
-
+/*
 const App: React.FC<{}> = () => {
 
     const [resultsData, setResultsData] = useState<ResultsData | null>(null);
@@ -109,3 +109,4 @@ const App: React.FC<{}> = () => {
 const root = document.createElement('div')
 document.body.appendChild(root)
 render(<App />, root)
+*/
